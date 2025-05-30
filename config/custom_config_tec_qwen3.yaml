@@ -7,7 +7,7 @@
 
 agent:
   model:
-    name: ollama/qwen3-14b #llama3.1:8b
+    name: ollama/qwen3_8b_gguf-Q4_K_M #llama3.1:8b
     api_base: https://myzapoboy--ollama-server-ollamaserver-serve.modal.run
     per_instance_cost_limit: 0
     total_cost_limit: 0
