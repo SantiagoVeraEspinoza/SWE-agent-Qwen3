@@ -7,9 +7,10 @@
 
 agent:
   model:
-    name: ollama/qwen3_8b_gguf-Q4_K_M
+    # name: ollama/qwen3_8b_gguf-Q4_K_M
+    name: ollama/qwen2.5-7b
     # api_base: http://localhost:11434
-    api_base: https://babyboschbosch--ollama-server-ollamaserver-serve.modal.run
+    api_base: https://tiesoboyzapopan--ollama-server-ollamaserver-serve.modal.run
     per_instance_cost_limit: 0  
     total_cost_limit: 0
     per_instance_call_limit: 15

@@ -1,17 +1,17 @@
-env:
-  repo:
-    github_url: https://github.com/SWE-agent/test-repo
+# env:
+#   repo:
+#     github_url: https://github.com/SWE-agent/test-repo
 
-problem_statement:
-  github_url: https://github.com/SWE-agent/test-repo/issues/1
+# problem_statement:
+#   github_url: https://github.com/SWE-agent/test-repo/issues/1
 
 agent:
   model:
-    name: ollama/qwen3_8b_gguf-Q4_K_M #llama3.1:8b
-    api_base: https://myzapoboy--ollama-server-ollamaserver-serve.modal.run
+    name: ollama/qwen2.5-7b #llama3.1:8b
+    api_base: https://tiesoboyzapopan--ollama-server-ollamaserver-serve.modal.run
     per_instance_cost_limit: 0
     total_cost_limit: 0
-    per_instance_call_limit: 100
+    per_instance_call_limit: 15
     max_input_tokens: 0
   templates:
     system_template: |-
