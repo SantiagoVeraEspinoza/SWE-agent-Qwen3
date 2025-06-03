@@ -5,7 +5,7 @@
 
 ## Presentation -> [here](https://www.canva.com/design/DAGpRWWxemc/MNAIA78d6-3ET6eaZJnm8g/edit?utm_content=DAGpRWWxemc&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)
 
-## Finetunning -> [here](https://colab.research.google.com/drive/1mIMtos05JLUYq-fXnlZfH2WPcB5qkwB3?usp=sharing)
+## Finetunning -> [here](https://colab.research.google.com/drive/1ERsxa0wbe3h3HFrkrzjPn8p8WGVUfOTE?usp=sharing)
 
 <p align="center">
   <a href="https://swe-agent.com/latest/">
