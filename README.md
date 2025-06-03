@@ -1,12 +1,11 @@
 # Qwen3 Finetunned Model for SWE Agent
+## Video Presentation -> [here](https://drive.google.com/file/d/1IMT22O8fKEii7KKDP6tTLBMmC2D_eDId/view?usp=sharing)
 
-[## Video Presentation](https://drive.google.com/file/d/1IMT22O8fKEii7KKDP6tTLBMmC2D_eDId/view?usp=sharing)
+## Demo Video -> [here](https://drive.google.com/file/d/11T1rbMVoQf4FijmFx0mmst2zF6PtNaRy/view?usp=sharing)
 
-[## Demo Video](https://drive.google.com/file/d/11T1rbMVoQf4FijmFx0mmst2zF6PtNaRy/view?usp=sharing)
+## Presentation -> [here](https://www.canva.com/design/DAGpRWWxemc/MNAIA78d6-3ET6eaZJnm8g/edit?utm_content=DAGpRWWxemc&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)
 
-[## Presentation](https://www.canva.com/design/DAGpRWWxemc/MNAIA78d6-3ET6eaZJnm8g/edit?utm_content=DAGpRWWxemc&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)
-
-[## Finetunning](https://colab.research.google.com/drive/1mIMtos05JLUYq-fXnlZfH2WPcB5qkwB3?usp=sharing)
+## Finetunning -> [here](https://colab.research.google.com/drive/1mIMtos05JLUYq-fXnlZfH2WPcB5qkwB3?usp=sharing)
 
 <p align="center">
   <a href="https://swe-agent.com/latest/">
