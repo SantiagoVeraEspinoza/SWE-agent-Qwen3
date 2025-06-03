@@ -1,22 +1,20 @@
-env:
-  repo:
-    github_url: https://github.com/SWE-agent/test-repo
+# env:
+#   repo:
+#     github_url: https://github.com/SWE-agent/test-repo
 
-problem_statement:
-  github_url: https://github.com/SWE-agent/test-repo/issues/1
+# problem_statement:
+#   github_url: https://github.com/SWE-agent/test-repo/issues/1
 
 agent:
   model:
-    name: ollama/qwen3_14b_gguf-Q4_K_M #llama3.1:8b
+    # name: ollama/qwen3_8b_gguf-Q4_K_M
+    name: ollama/qwen2.5-7b
     # api_base: http://localhost:11434
-    api_base: https://lobotmiamastieso--ollama-server-ollamaserver-serve.modal.run
-    per_instance_cost_limit: 0
+    api_base: https://tiesoboyzapopan--ollama-server-ollamaserver-serve.modal.run
+    per_instance_cost_limit: 0  
     total_cost_limit: 0
     per_instance_call_limit: 15
-    temperature: 0.3
-    top_p: 0.75
-    max_input_tokens: 0
-    max_output_tokens: 128
+    max_input_tokens: 0  
   templates:
     system_template: |-
       SETTING: You are an autonomous programmer, and you're working directly in the command line with a special interface.
@@ -46,6 +44,10 @@ agent:
       ls -a
       ```
 
+      AVOID ASSUMING JUST BECAUSE YOU THOUGHT OF MODFIDYING, EXECUTING OR CREATING A FILE THAT CHANGE HAPPENED. YOU ARE INTERACTING WITH AN ENVIRONMENT. IF YOU PROPOSE A COMMAND, IT WILL NOT HAVE ANY KIND OF EFFECT UNTIL I RETURN AN OBSERVATION.
+
+      THE COMMAND SECTION NEEDS TO BE IN BETWEEN TRIPPLE BACKTICKS, DON'T PUT A COMMAND TITLE.
+
       You should only include a *SINGLE* command in the command section and then wait for a response from the shell before continuing with more discussion and commands. Everything you include in the DISCUSSION section will be saved for future reference.
       If you'd like to issue two commands at once, PLEASE DO NOT DO THAT! Please instead first submit just the first command, and then after receiving a response you'll be able to issue the second command.
       You're free to use any other bash commands you want (e.g. find, grep, cat, ls, cd) in addition to the special commands listed above.
@@ -67,6 +69,16 @@ agent:
       Note however that you cannot use any interactive session commands (e.g. python, vim) in this environment, but you can write scripts and run them. E.g. you can write a python script and then run it with `python <script_name>.py`.
 
       NOTE ABOUT THE EDIT COMMAND: Indentation really matters! When editing a file, make sure to insert appropriate indentation before each line!
+
+      First check if a file exists with the find command! Don't create files if they already exist!
+      Just be carefull, don't always search for the same path, try to be creative.
+      Before you edit something, open it!
+
+      IF YOU USE THE FIND COMMAND AVOID USING A PATH ALONG WITH IT
+
+      Avoid using the same command twice if not necessary.
+      Avoid proposing the same command twice and check if your output was expected.
+      PLEASE AVOID IT!
 
       IMPORTANT TIPS:
       1. Always start by trying to replicate the bug that the issues discusses.
@@ -102,8 +114,16 @@ agent:
       (Current directory: {{working_dir}})
       bash-$
     next_step_template: |-
+      RAN COMMAND
+
       Remember to suggest the command submit if you are sure the solution is done! But always test the solution works first!
       Just propose one command at a time! But read the observation below, avoid proposing the same command twice and check if your output was expected.
+      Don't create files if they already exist!
+      DON'T USE THE `find_file` COMMAND WITH A DIR, ONLY THE NAME TO FIND.
+      DON'T RUN ANY COMMAND IN YOUR THINK PROCESS, WAIT FOR ME TO GIVE YOU THE RESULT NEXT PROMPT.
+
+      PAY ATTENTION BELOW, don't execute a command TWICE in a row.
+      The following output is the most important of them all...
 
       OBSERVATION:
       {{observation}}
@@ -111,7 +131,10 @@ agent:
       (Current directory: {{working_dir}})
       bash-$
     next_step_no_output_template: |-
-      Your command ran successfully and did not produce any output.
+      COMMAND FAILED
+
+      Your command ran successfully and did not produce any output. Which means the fix didn't work.
+      
       If you try to MODIFY a file please use the edit command, NEVER include more sections other than DISCUSSION and the code.
       Just propose one command at a time! But read the observation below, avoid proposing the same command twice and check if your output was expected.
 
@@ -131,7 +154,7 @@ agent:
       - trajectories/demonstrations/replay__marshmallow-code__marshmallow-1867__default_sys-env_window100__t-0.20__p-0.95__c-2.00__install-1/marshmallow-code__marshmallow-1867.traj
   tools:
     env_variables:
-      WINDOW: 50
+      WINDOW: 100
       OVERLAP: 2
     bundles:
       - path: tools/registry
@@ -140,7 +163,5 @@ agent:
       - path: tools/edit_linting
       - path: tools/submit
     parse_function:
-      type: xml_thought_action #function_calling # thought_action 
-  # history_processors:
-  #   - type: last_n_observations
-  #     n: 5
+      type: thought_action #function_calling # thought_action 
+  history_processors: []

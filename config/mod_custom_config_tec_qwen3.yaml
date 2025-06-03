@@ -1,0 +1,128 @@
+# env:
+#   repo:
+#     github_url: https://github.com/SWE-agent/test-repo
+
+# problem_statement:
+#   github_url: https://github.com/SWE-agent/test-repo/issues/1
+
+agent:
+  model:
+    name: ollama/qwen3_14b_gguf-Q4_K_M #devstral #llama3.1:8b
+    api_base: https://sigma-agent-2--ollama-server-ollamaserver-serve.modal.run
+    per_instance_cost_limit: 0
+    total_cost_limit: 0
+    per_instance_call_limit: 15
+    max_input_tokens: 0
+    temperature: 0.3
+    top_p: 0.75
+    max_output_tokens: 128
+  templates:
+    system_template: |-
+      /no_think
+      You are a CLI programmer operating in a terminal interface. Be concise and accurate.
+
+      ⚠️ Rules:
+      - Use only the TOOLS shown. Do NOT invent new ones.
+      - One command at a time.
+      - No interactive commands (e.g., vim, python shell).
+      - You must only output valid Python code inside the edit tool.
+      - Do NOT include file paths, shell commands, or reasoning in the code body.
+      - Indentation really matters, be careful with the tool edit.
+      
+      Example of incorrect:
+      def foo():
+      print("bar")   ← This will throw an indentation error.
+      
+      Example of correct:
+      def foo():
+          print("bar")   ← This is correctly indented.
+
+      You can use shell commands and the following TOOLS:
+      {{command_docs}}
+
+
+      📄 Output Format Example (always use exactly this):
+      DISCUSSION  
+      I've already finished my changes, so I'm going to submit them.  
+      <command>
+      submit
+      </command>
+
+      The shell prompt:
+      (Open file: <path>) <cwd> $
+
+      I'm sure you can do this.
+
+    instance_template: |-
+      /no_think
+      You are solving the following repository issue:
+
+      ISSUE:
+      {{problem_statement}}
+
+      INSTRUCTIONS:
+      You're in the repo's root. Use one command at a time. TOOLS and shell commands are allowed. Do NOT use interactive commands (e.g. `vim`, `python` shell).
+
+      Always format your output like this example:
+      DISCUSSION  
+      I've already finished my changes, so I'm going to submit them.  
+      <command>
+      submit
+      </command>
+
+      (Open file: {{openfile}})
+      (Current directory: {{working_dir}})
+      bash-$
+
+    next_step_template: |-
+      /no_think
+      Read the output below and think carefully. Propose ONE command. Do NOT repeat previous commands.
+
+      ✅ If you think the issue is fixed and all changes are complete, run the `submit` command.
+
+      🧠 If you're unsure whether your changes have been applied, check with `git status` or other relevant tools.
+
+      {{observation}}
+      (Open file: {{openfile}})
+      (Current directory: {{working_dir}})
+      bash-$
+
+    next_step_no_output_template: |-
+      /no_think
+      Your last command ran successfully with no output.
+      
+      If you're editing files, use the `edit` tool with proper indentation. Only include DISCUSSION and COMMAND blocks.
+      
+      DISCUSSION  
+      Explanation goes here.  
+      <command>
+      Command goes here.
+      </command>
+      
+      (Open file: {{openfile}})
+      (Current directory: {{working_dir}})
+      bash-$
+
+    demonstration_template: |
+      /no_think
+      Here is a demonstration of how to correctly accomplish this task.
+      It is included to show you how to correctly use the interface.
+      You do not need to follow exactly what is done in the demonstration.
+      --- DEMONSTRATION ---
+      {{demonstration}}
+      --- END OF DEMONSTRATION ---
+    demonstrations:
+      #- trajectories/demonstrations/replay__marshmallow-code__marshmallow-1867__function_calling_replace_from_source/marshmallow-code__marshmallow-1867.traj
+      - trajectories/demonstrations/replay__marshmallow-code__marshmallow-1867__xml_sys-env_window100__t-0.20__p-0.95__c-2.00__install-1/marshmallow-code__marshmallow-1867.traj
+  tools:
+    env_variables:
+      WINDOW: 50
+      OVERLAP: 2
+    bundles:
+      - path: tools/registry
+      - path: tools/defaults
+      - path: tools/search
+      - path: tools/edit_linting
+      - path: tools/submit
+    parse_function:
+      type: xml_thought_action #function_calling # thought_action 
