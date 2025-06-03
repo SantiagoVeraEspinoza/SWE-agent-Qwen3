@@ -1,0 +1,92 @@
+[
+  {
+    "instance_id": "astropy__astropy-12907",
+    "model_patch": "diff --git a/reproduce.py b/reproduce.py\nnew file mode 100644\nindex 0000000000..8b13789179\n--- /dev/null\n+++ b/reproduce.py\n@@ -0,0 +1 @@\n+\n",
+    "base_commit": "d16bfe05a744909de4b27f5875fe0d4ed41ce607",
+    "model_name_or_path": "original_model"
+  },
+  {
+    "instance_id": "astropy__astropy-6938",
+    "model_patch": "diff --git a/reproduce.py b/reproduce.py\nnew file mode 100644\nindex 0000000000..8b13789179\n--- /dev/null\n+++ b/reproduce.py\n@@ -0,0 +1 @@\n+\n",
+    "base_commit": "c76af9ed6bb89bfba45b9f5bc1e635188278e2fa",
+    "model_name_or_path": "original_model"
+  },
+  {
+    "instance_id": "astropy__astropy-7746",
+    "model_patch": "diff --git a/reproduce.py b/reproduce.py\nnew file mode 100644\nindex 0000000000..8b13789179\n--- /dev/null\n+++ b/reproduce.py\n@@ -0,0 +1 @@\n+\n",
+    "base_commit": "d5bd3f68bb6d5ce3a61bdce9883ee750d1afade5",
+    "model_name_or_path": "original_model"
+  },
+  {
+    "instance_id": "django__django-10914",
+    "model_patch": "diff --git a/tests/regression/file_permissions.py b/tests/regression/file_permissions.py\nnew file mode 100644\nindex 0000000000..ed8cdd34de\n--- /dev/null\n+++ b/tests/regression/file_permissions.py\n@@ -0,0 +1,32 @@\n+import os\n+from django.conf import settings\n+from django.core.files.storage import default_storage\n+from django.test import SimpleTestCase, override_settings\n+\n+\n+@override_settings(\n+    FILE_UPLOAD_PERMISSIONS=0o644,\n+)\n+class FilePermissionsTest(SimpleTestCase):\n+    def test_file_permissions(self):\n+        \"\"\"Verify that uploaded files have the expected permissions.\"\"\"\n+        with open(__file__, \"rb\") as f:\n+            content = f.read()\n+\n+        # Upload a file using in-memory storage.\n+        with default_storage.open(\"test.txt\", \"wb\") as destination:\n+            destination.write(content)\n+\n+        self.assertEqual(\n+            os.stat(default_storage.path(\"test.txt\")).st_mode & 0o777,\n+            settings.FILE_UPLOAD_PERMISSIONS,\n+        )\n+\n+        # Upload a file using temporary storage.\n+        with default_storage.open(\"test2.txt\", \"wb\") as destination:\n+            destination.write(content)\n+\n+        self.assertEqual(\n+            os.stat(default_storage.path(\"test2.txt\")).st_mode & 0o777,\n+            settings.FILE_UPLOAD_PERMISSIONS,\n+        )\n",
+    "base_commit": "e7fd69d051eaa67cb17f172a39b57253e9cb831a",
+    "model_name_or_path": "original_model"
+  },
+  {
+    "instance_id": "django__django-10924",
+    "model_patch": "diff --git a/reproduce.py b/reproduce.py\nnew file mode 100644\nindex 0000000000..8b7ca5bd91\n--- /dev/null\n+++ b/reproduce.py\n@@ -0,0 +1,8 @@\n+import os\n+from django.conf import settings\n+from django.db import models\n+\n+\n+class LocalFiles(models.Model):\n+    name = models.CharField(max_length=255)\n+    file = models.FilePathField(path=os.path.join(settings.LOCAL_FILE_DIR, 'example_dir'))\n",
+    "base_commit": "bceadd2788dc2dad53eba0caae172bd8522fd483",
+    "model_name_or_path": "original_model"
+  },
+  {
+    "instance_id": "django__django-11133",
+    "model_patch": "diff --git a/reproduce.py b/reproduce.py\nnew file mode 100644\nindex 0000000000..84a30af4fa\n--- /dev/null\n+++ b/reproduce.py\n@@ -0,0 +1,16 @@\n+from django.http import HttpResponse \n+# String content\n+response = HttpResponse(\"My Content\")\n+response.content \n+# Out: b'My Content'\n+# This is correct\n+# Bytes content\n+response = HttpResponse(b\"My Content\") \n+response.content \n+# Out: b'My Content'\n+# This is also correct\n+# memoryview content\n+response = HttpResponse(memoryview(b\"My Content\")) \n+response.content\n+# Out: b'<memory at 0x7fcc47ab2648>'\n+# This is not correct, I am expecting b'My Content'\n",
+    "base_commit": "879cc3da6249e920b8d54518a0ae06de835d7373",
+    "model_name_or_path": "original_model"
+  },
+  {
+    "instance_id": "django__django-11283",
+    "model_patch": "diff --git a/reproduce.py b/reproduce.py\nnew file mode 100644\nindex 0000000000..77cb8cfa16\n--- /dev/null\n+++ b/reproduce.py\n@@ -0,0 +1,20 @@\n+from django.db import models\n+\n+\n+class Base(models.Model):\n+    name = models.CharField(max_length=255)\n+\n+\n+class Proxy(Base):\n+    class Meta:\n+        proxy = True\n+\n+    def __str__(self):\n+        return self.name\n+\n+\n+class NonProxy(Base):\n+    pass\n+\n+\n+print(Proxy._meta.get_field(\"name\").verbose_name)\n",
+    "base_commit": "08a4ee06510ae45562c228eefbdcaac84bd38c7a",
+    "model_name_or_path": "original_model"
+  },
+  {
+    "instance_id": "django__django-11742",
+    "model_patch": "diff --git a/reproduce.py b/reproduce.py\nnew file mode 100644\nindex 0000000000..8b7ca5bd91\n--- /dev/null\n+++ b/reproduce.py\n@@ -0,0 +1,8 @@\n+import os\n+from django.conf import settings\n+from django.db import models\n+\n+\n+class LocalFiles(models.Model):\n+    name = models.CharField(max_length=255)\n+    file = models.FilePathField(path=os.path.join(settings.LOCAL_FILE_DIR, 'example_dir'))\n",
+    "base_commit": "fee75d2aed4e58ada6567c464cfd22e89dc65f4a",
+    "model_name_or_path": "original_model"
+  },
+  {
+    "instance_id": "django__django-11815",
+    "model_patch": "diff --git a/reproduce.py b/reproduce.py\nnew file mode 100644\nindex 0000000000..8b13789179\n--- /dev/null\n+++ b/reproduce.py\n@@ -0,0 +1 @@\n+\n",
+    "base_commit": "e02f67ef2d03d48128e7a118bf75f0418e24e8ac",
+    "model_name_or_path": "original_model"
+  },
+  {
+    "instance_id": "django__django-11905",
+    "model_patch": "diff --git a/reproduce.py b/reproduce.py\nnew file mode 100644\nindex 0000000000..8eabb07025\n--- /dev/null\n+++ b/reproduce.py\n@@ -0,0 +1,9 @@\n+from django.db.models import Q, QuerySet\n+from django.test import TestCase\n+\n+\n+class TestQuerySet(TestCase):\n+    def test_isnull_lookup_with_non_boolean_value(self) -> None:\n+        qs = QuerySet()\n+        with self.assertRaises(ValueError):\n+            qs.filter(Q(id__isnull=1))\n",
+    "base_commit": "2f72480fbd27896c986c45193e1603e35c0b19a7",
+    "model_name_or_path": "original_model"
+  },
+  {
+    "instance_id": "django__django-11964",
+    "model_patch": "diff --git a/reproduce.py b/reproduce.py\nnew file mode 100644\nindex 0000000000..84a30af4fa\n--- /dev/null\n+++ b/reproduce.py\n@@ -0,0 +1,16 @@\n+from django.http import HttpResponse \n+# String content\n+response = HttpResponse(\\\\\"My Content\\\\\")\n+response.content \n+# Out: b'My Content'\n+# This is correct\n+# Bytes content\n+response = HttpResponse(b\\\\\"My Content\\\\\") \n+response.content \n+# Out: b'My Content'\n+# This is also correct\n+# memoryview content\n+response = HttpResponse(memoryview(b\\\\\"My Content\\\\\")) \n+response.content\n+# Out: b'<memory at 0x7fcc47ab2648>'\n+# This is not correct, I am expecting b'My Content'\n",
+    "base_commit": "fc2b1cc926e34041953738e58fa6ad3053059b22",
+    "model_name_or_path": "original_model"
+  },
+  {
+    "instance_id": "django__django-11999",
+    "model_patch": "diff --git a/reproduce.py b/reproduce.py\nnew file mode 100644\nindex 0000000000..baa37ea54e\n--- /dev/null\n+++ b/reproduce.py\n@@ -0,0 +1,20 @@\n+from django.db import models\n+\n+\n+\n+class FooBar(models.Model):\n+\n+    foo_bar = models.CharField(\"foo\", choices=[(1, 'foo'), (2, 'bar')])\n+\n+    \n+\n+    def __str__(self):\n+\n+        return self.get_foo_bar_display() # This returns 'foo' or 'bar' in 2.2, but 'something' in 2.1\n+\n+    \n+\n+    def get_foo_bar_display(self):\n+\n+        return \"something\"\n+\n",
+    "base_commit": "84633905273fc916e3d17883810d9969c03f73c2",
+    "model_name_or_path": "original_model"
+  },
+  {
+    "instance_id": "django__django-12747",
+    "model_patch": "diff --git a/reproduce.py b/reproduce.py\nnew file mode 100644\nindex 0000000000..36423dadc3\n--- /dev/null\n+++ b/reproduce.py\n@@ -0,0 +1,13 @@\n+from django.test import TestCase\n+from testapp.models import BlockLibrary, FileAccess\n+\n+\n+class QuerySetDeleteTest(TestCase):\n+    def test_delete_no_objects(self):\n+        # Test for models with foreign keys\n+        self.assertEqual(0, FileAccess.objects.all().delete()[0])\n+        self.assertEqual({}, FileAccess.objects.all().delete()[1])\n+\n+        # Test for \"simple\" models without foreign key\n+        self.assertEqual(0, BlockLibrary.objects.all().delete()[0])\n+        self.assertEqual({'testapp.BlockLibrary': 0}, BlockLibrary.objects.all().delete()[1])\n",
+    "base_commit": "c86201b6ed4f8256b0a0520c08aa674f623d4127",
+    "model_name_or_path": "original_model"
+  },
+  {
+    "instance_id": "django__django-12915",
+    "model_patch": "diff --git a/reproduce.py b/reproduce.py\nnew file mode 100644\nindex 0000000000..8b13789179\n--- /dev/null\n+++ b/reproduce.py\n@@ -0,0 +1 @@\n+\n",
+    "base_commit": "4652f1f0aa459a7b980441d629648707c32e36bf",
+    "model_name_or_path": "original_model"
+  },
+  {
+    "instance_id": "django__django-12983",
+    "model_patch": "diff --git a/reproduce.py b/reproduce.py\nnew file mode 100644\nindex 0000000000..baa37ea54e\n--- /dev/null\n+++ b/reproduce.py\n@@ -0,0 +1,20 @@\n+from django.db import models\n+\n+\n+\n+class FooBar(models.Model):\n+\n+    foo_bar = models.CharField(\\\\\"foo\\\\\", choices=[(1, 'foo'), (2, 'bar')])\n+\n+    \n+\n+    def __str__(self):\n+\n+        return self.get_foo_bar_display() # This returns 'foo' or 'bar' in 2.2, but 'something' in 2.1\n+\n+    \n+\n+    def get_foo_bar_display(self):\n+\n+        return \\\\\"something\\\\\"\n+\n",
+    "base_commit": "3bc4240d979812bd11365ede04c028ea13fdc8c6",
+    "model_name_or_path": "original_model"
+  }
+]

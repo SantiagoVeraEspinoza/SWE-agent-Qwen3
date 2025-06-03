@@ -7,13 +7,16 @@ problem_statement:
 
 agent:
   model:
-    name: ollama/qwen2_5_7b_gguf-Q4_K_M #llama3.1:8b
+    name: ollama/qwen3_14b_gguf-Q4_K_M #llama3.1:8b
     # api_base: http://localhost:11434
     api_base: https://lobotmiamastieso--ollama-server-ollamaserver-serve.modal.run
     per_instance_cost_limit: 0
     total_cost_limit: 0
     per_instance_call_limit: 15
+    temperature: 0.3
+    top_p: 0.75
     max_input_tokens: 0
+    max_output_tokens: 128
   templates:
     system_template: |-
       SETTING: You are an autonomous programmer, and you're working directly in the command line with a special interface.
@@ -128,7 +131,7 @@ agent:
       - trajectories/demonstrations/replay__marshmallow-code__marshmallow-1867__default_sys-env_window100__t-0.20__p-0.95__c-2.00__install-1/marshmallow-code__marshmallow-1867.traj
   tools:
     env_variables:
-      WINDOW: 100
+      WINDOW: 50
       OVERLAP: 2
     bundles:
       - path: tools/registry
@@ -137,7 +140,7 @@ agent:
       - path: tools/edit_linting
       - path: tools/submit
     parse_function:
-      type: thought_action #function_calling # thought_action 
-  history_processors:
-    - type: last_n_observations
-      n: 5
+      type: xml_thought_action #function_calling # thought_action 
+  # history_processors:
+  #   - type: last_n_observations
+  #     n: 5
