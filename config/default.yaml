@@ -1,4 +1,14 @@
+env:
+  repo:
+    github_url: https://github.com/SWE-agent/test-repo
+
+problem_statement:
+  github_url: https://github.com/SWE-agent/test-repo/issues/1
+
 agent:
+  model:
+    api_base: https://a0164-mbpns6jy-eastus2.cognitiveservices.azure.com/openai/deployments/gpt-4.1/chat/completions?api-version=2025-01-01-preview
+    api_key: 1XnhsyibP3csHa5qpehrjrhgquGw3NDF2HSsj5VwC0vubhYzzAImJQQJ99BFACHYHv6XJ3w3AAAAACOGzh5S
   templates:
     system_template: |-
       SETTING: You are an autonomous programmer, and you're working directly in the command line with a special interface.
@@ -120,7 +130,7 @@ agent:
       - path: tools/submit
     enable_bash_tool: true
     parse_function:
-      type: function_calling
+      type: thought_action # function_calling
   history_processors:
     - type: last_n_observations
       n: 5
